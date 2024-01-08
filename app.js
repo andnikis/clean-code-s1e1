@@ -36,18 +36,18 @@ var createNewTaskElement=function(taskString){
     var deleteButtonImg=document.createElement("img");//delete button image
 
     label.innerText=taskString;
-    label.className="task-size caption";
+    label.className="caption task__size";
 
     //Each elements, needs appending
     checkBox.type="checkbox";
-    checkBox.className="checkbox";
+    checkBox.className="task__checkbox";
     editInput.type="text";
-    editInput.className="text-data task-size text-item hide-edit";
+    editInput.className="task__size text-edit text-edit_size text-edit_hide";
 
     editButton.innerText="Edit"; //innerText encodes special characters, HTML does not.
-    editButton.className="common-btn edit";
+    editButton.className="common-btn common-btn_edit";
 
-    deleteButton.className="common-btn delete";
+    deleteButton.className="common-btn common-btn_delete";
     deleteButtonImg.src='./remove.svg';
     deleteButton.appendChild(deleteButtonImg);
     // new class names
@@ -90,8 +90,8 @@ var editTask=function(){
 
     var editInput=listItem.querySelector('input[type=text]');
     var label=listItem.querySelector("label");
-    var editBtn=listItem.querySelector(".edit");
-    var containsClass=listItem.classList.contains("edit-mode");
+    var editBtn=listItem.querySelector(".common-btn_edit");
+    var containsClass=listItem.classList.contains("task_edit");
 
     //If class of the parent is .editmode
     if(containsClass){
@@ -101,21 +101,23 @@ var editTask=function(){
         label.innerText=editInput.value;
         editBtn.innerText="Edit";
         // new class names
-        label.classList.remove("edit-mode-caption");
+        label.classList.remove("caption_hide");
         label.classList.add("caption");
-        editInput.classList.remove("edit-mode-text");
+        editInput.classList.add("text-edit_hide");
+        editInput.classList.remove("text-edit_show");
         //
     }else{
         editInput.value=label.innerText;
         editBtn.innerText="Save";
         // new class names
-        label.classList.add("edit-mode-caption");
-        editInput.classList.add("edit-mode-text");
+        label.classList.add("caption_hide");
+        editInput.classList.remove("text-edit_hide");
+        editInput.classList.add("text-edit_show");
         //
     }
 
     //toggle .editmode on the parent.
-    listItem.classList.toggle("edit-mode");
+    listItem.classList.toggle("task_edit");
 };
 
 
@@ -139,7 +141,7 @@ var taskCompleted=function(){
     var listItem=this.parentNode;
     // new class names
     var label=listItem.querySelector("label");
-    label.classList.add("completed-caption");
+    label.classList.add("caption_completed");
     //
     completedTasksHolder.appendChild(listItem);
     bindTaskEvents(listItem, taskIncomplete);
@@ -155,7 +157,7 @@ var taskIncomplete=function(){
     var listItem=this.parentNode;
     // new class names
     var label=listItem.querySelector("label");
-    label.classList.remove("completed-caption");
+    label.classList.remove("caption_completed");
     //
     incompleteTaskHolder.appendChild(listItem);
     bindTaskEvents(listItem,taskCompleted);
@@ -180,8 +182,8 @@ var bindTaskEvents=function(taskListItem,checkBoxEventHandler){
     console.log("bind list item events");
 //select ListItems children
     var checkBox=taskListItem.querySelector("input[type=checkbox]");
-    var editButton=taskListItem.querySelector("button.edit");
-    var deleteButton=taskListItem.querySelector("button.delete");
+    var editButton=taskListItem.querySelector(".common-btn_edit");
+    var deleteButton=taskListItem.querySelector(".common-btn_delete");
 
 
     //Bind editTask to edit button.
